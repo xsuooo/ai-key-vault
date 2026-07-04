@@ -1,120 +1,119 @@
 # AI Key Vault
 
-一个更适合自己长期用的 AI API Key 管理小工具。
+AI Key Vault 是一个本地运行的 AI API Key 管理工具，适合统一保存多组 OpenAI 兼容接口配置，并快速检查 Key 是否可用、能看到哪些模型，以及哪个模型更适合日常使用。
 
-它不是那种花里胡哨的大平台，核心思路就一件事: 把手上的 Key、地址、模型先收整齐，再用最省事的方式判断它现在到底还能不能用、能看到哪些模型、哪个模型更适合拿来当默认模型。
+项目默认把配置保存在浏览器本地，不需要数据库，也不托管你的 Key。
 
-如果你手里经常有多套 OpenAI 兼容渠道，或者总在不同平台之间来回复制 Key，这个项目基本就是为这种场景准备的。
+## 快速使用
 
-## 现在已经支持什么
+### 方式一：下载 Docker 包
 
-### 🔐 配置管理
+适合只想直接用、不想安装 Node.js 的朋友。
 
-- 本地保存多组配置，包含名称、Base URL、API Key、默认模型
-- 自动兼容旧版本本地数据，打开页面后会尽量把历史配置接回来
-- 支持复制单条配置，也支持复制全部配置
-- 支持导出 `.txt` 和 `.md`
+1. 打开 [Releases](https://github.com/xsuooo/ai-key-vault/releases/latest)。
+2. 下载 `ai-key-vault-docker.zip`。
+3. 解压后启动 Docker Desktop。
+4. 双击 `start.bat`。
+5. 打开 [http://localhost:3000](http://localhost:3000)。
 
-### 📥 导入解析
+停止服务时双击 `stop.bat`。
 
-- 支持粘贴解析，能识别 `curl`、JSON、环境变量风格文本、结构化文本块、`ccswitch://` 链接
-- 支持导入 `cc-switch` 导出的 `.sql` 文件，也支持直接粘贴 SQL 文本
-- 支持一次粘贴多个配置，解析后可批量直接新增
-- 支持把解析结果先回填到表单，再决定要不要保存
+如果本机 3000 端口已经被占用，可以编辑压缩包里的 `docker-compose.yml`，把：
 
-### ✅ 可用性测试
+```yaml
+ports:
+  - "3000:3000"
+```
 
-- 支持单条测试，也支持一键测试全部配置
-- 测试结果会记录状态、错误详情、最近测试时间
-- 适合先快速判断某个 Key 和地址现在还能不能打通
+改成：
 
-### 🧠 模型识别
+```yaml
+ports:
+  - "3001:3000"
+```
 
-- 支持读取当前 Key 在该渠道下能看到的模型列表
-- 识别完成后会给出推荐模型，并支持复制模型列表
-- 支持在识别结果里直接切换当前模型
+然后访问 [http://localhost:3001](http://localhost:3001)。
 
-### ⚡ 性能评测
-
-- 支持按模型做 1 到 3 轮测速
-- 会展示平均耗时、中位耗时、首字时间、成功率、稳定性
-- 支持按模型名或 tag 搜索模型，方便从长列表里筛选
-- 会自动汇总最快模型、首字最快模型、最稳模型，并给出一个默认推荐模型
-- 会自动跳过明显不适合做对话测速的模型，比如 embedding、rerank、部分图像类模型
-
-### 🔗 CC Switch 联动
-
-- 支持导出到 CC Switch，也支持直接唤起 CC Switch 导入
-- 当前已适配的目标 App 包括 `Claude`、`Codex`、`Gemini`、`OpenCode`、`OpenClaw`
-
-## 这个项目适合谁
-
-- 手上有多套 AI API Key，想统一收纳的人
-- 经常会忘记某个渠道地址、模型名、Key 放哪了的人
-- 想快速判断某个 Key 还能不能打通的人
-- 想先识别模型，再挑一个更稳、更快默认模型的人
-- 想要一个轻量、自己部署、自己掌控数据的小工具的人
-
-## 隐私和数据说明
-
-这个项目默认把配置数据保存在浏览器本地的 `localStorage` 里，不接数据库，也不会帮你托管 Key。
-
-但有一点要说明白: 连通性测试、模型识别、性能评测这类真实联网请求，还是会经过项目自己的同源后端接口转发。这样做主要是为了绕开浏览器直连上游时常见的 CORS 问题。
-
-简单理解就是:
-
-- 配置数据默认存在你自己的浏览器里
-- 项目没有做数据库存储逻辑
-- 真正发请求测试时，Key 会参与当前这次后端转发请求
-
-## 快速开始
+### 方式二：从源码运行
 
 ```bash
 npm install
 npm run dev
 ```
 
-打开 [http://localhost:3000](http://localhost:3000) 就能开始用。
+打开 [http://localhost:3000](http://localhost:3000)。
 
-## 打包部署
-
-```bash
-npm run build
-npm run start
-```
-
-部署到支持 Next.js 的平台也没问题，比如 Vercel、Netlify 等。
-
-## Docker 一键部署
-
-项目已经带好 `Dockerfile` 和 `docker-compose.yml`，本机装好 Docker 后，直接执行:
-
-```bash
-npm run docker:deploy
-```
-
-默认会自动构建镜像并在后台启动容器，然后访问 [http://localhost:3000](http://localhost:3000)。
-
-常用命令:
-
-```bash
-npm run docker:logs
-npm run docker:down
-```
-
-如果你不想走 `npm` 脚本，也可以直接用:
+### 方式三：自己构建 Docker 镜像
 
 ```bash
 docker compose up -d --build
 ```
 
-## 使用方式很简单
+常用命令：
 
-1. 填一条配置，或者直接把现成的 `curl` / JSON / 文本块粘进来
-2. 点“保存配置”或者“粘贴并直接新增”
-3. 先做连通性测试，确认地址和 Key 没问题
-4. 再做模型识别，看看这个渠道到底开放了哪些模型
-5. 如果模型很多，就打开性能评测，跑几轮后挑一个更适合日常使用的默认模型
+```bash
+docker compose logs -f app
+docker compose down
+```
+
+也可以使用项目内置脚本：
+
+```bash
+npm run docker:deploy
+npm run docker:logs
+npm run docker:down
+```
+
+## 主要功能
+
+- 本地保存多组配置：名称、Base URL、API Key、默认模型。
+- 支持复制单条配置、复制全部配置、导出 `.txt` / `.md` / `.json`。
+- 支持从 `curl`、JSON、环境变量文本、结构化文本块、`ccswitch://` 链接中解析配置。
+- 支持导入 `cc-switch` 导出的 `.sql` 文件。
+- 支持单条测试和批量测试，记录状态、错误详情和最近测试时间。
+- 支持模型列表探测、推荐模型、复制模型列表。
+- 支持按模型进行 1 到 3 轮测速，展示平均耗时、中位耗时、首字时间、成功率和稳定性。
+- 支持 CC Switch 导出和唤起导入，目标应用包括 `Claude`、`Codex`、`Gemini`、`OpenCode`、`OpenClaw`。
+
+## 隐私说明
+
+配置数据默认保存在浏览器 `localStorage` 中。项目没有数据库，也没有服务端持久化 Key 的逻辑。
+
+连通性测试、模型识别和性能评测需要真实请求上游接口。为了绕开浏览器直连常见的 CORS 限制，这些请求会通过本项目的同源后端接口转发。
+
+简单来说：
+
+- 配置默认存在你自己的浏览器里。
+- 项目不会把 Key 写入数据库。
+- 测试和测速时，Key 会参与当前这一次后端转发请求。
+- 如果把项目部署到公网，请只给可信的人使用。
+
+## 安全策略
+
+服务端会校验 OpenAI 兼容 Base URL，默认拒绝本地地址、内网地址和其他非公开地址，降低误请求内网资源的风险。
+
+生产环境默认要求 HTTPS。如果确实需要访问某些内部服务，可以通过环境变量显式放开：
+
+```bash
+OPENAI_PROXY_ALLOWED_HOSTS=example.internal,relay.example.com
+```
+
+本地开发时如需允许私有地址：
+
+```bash
+OPENAI_PROXY_ALLOW_PRIVATE=1
+```
+
+不建议在公网部署时开启私有地址访问。
+
+## 开发命令
+
+```bash
+npm test
+npm run lint
+npm run build
+npm audit --json
+```
 
 ## 技术栈
 
@@ -123,7 +122,4 @@ docker compose up -d --build
 - TypeScript
 - Tailwind CSS 4
 - ECharts
-
-## 友链
-
-- [LinuxDo 社区](https://linux.do/)
+- Zustand
