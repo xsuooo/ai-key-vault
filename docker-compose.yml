@@ -1,0 +1,14 @@
+services:
+  app:
+    image: ai-key-vault:latest
+    container_name: ai-key-vault
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+    restart: unless-stopped

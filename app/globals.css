@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+button:not(:disabled),
+summary {
+  cursor: pointer;
+}
+
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-in-up {
+  animation: slide-in-up 0.25s ease-out;
+}
+
+@keyframes soft-enter {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-soft-enter {
+  animation: soft-enter 0.18s ease-out;
+}
+
+.compact-icon-btn {
+  display: inline-flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(228 228 231);
+  background: rgb(255 255 255);
+  color: rgb(82 82 91);
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.compact-icon-btn:hover:not(:disabled) {
+  border-color: rgb(212 212 216);
+  background: rgb(244 244 245);
+  color: rgb(24 24 27);
+  transform: translateY(-1px);
+}
+
+.compact-icon-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.96);
+}
+
+.compact-icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.compact-icon-btn-primary {
+  border-color: rgb(16 185 129 / 0.45);
+  background: rgb(236 253 245);
+  color: rgb(4 120 87);
+}
+
+.compact-icon-btn-danger {
+  border-color: rgb(254 202 202);
+  color: rgb(220 38 38);
+}
+
+.compact-icon-btn-danger:hover:not(:disabled) {
+  border-color: rgb(252 165 165);
+  background: rgb(254 242 242);
+  color: rgb(185 28 28);
+}
+
+.dark .compact-icon-btn {
+  border-color: rgb(63 63 70);
+  background: rgb(39 39 42);
+  color: rgb(212 212 216);
+}
+
+.dark .compact-icon-btn:hover:not(:disabled) {
+  border-color: rgb(82 82 91);
+  background: rgb(63 63 70);
+  color: rgb(244 244 245);
+}
+
+.dark .compact-icon-btn-primary {
+  border-color: rgb(16 185 129 / 0.5);
+  background: rgb(6 78 59 / 0.35);
+  color: rgb(110 231 183);
+}
+
+.dark .compact-icon-btn-danger {
+  border-color: rgb(127 29 29);
+  color: rgb(248 113 113);
+}
+
+.dark .compact-icon-btn-danger:hover:not(:disabled) {
+  border-color: rgb(153 27 27);
+  background: rgb(127 29 29 / 0.35);
+  color: rgb(252 165 165);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

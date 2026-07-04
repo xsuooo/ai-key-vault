@@ -1,0 +1,41 @@
+{
+  "name": "ai-key-vault",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "docker:build": "docker compose build",
+    "docker:deploy": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f app",
+    "lint": "eslint",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test lib/server-url-guard.test.ts lib/safe-fetch.test.ts lib/openai-proxy-request.test.ts lib/openai-proxy-timeouts.test.ts store/storage.test.ts components/config/config-card-view-mode.test.ts app/benchmark/benchmark-prompt-wiring.test.ts",
+    "test:security": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test lib/server-url-guard.test.ts",
+    "test:ui": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test components/config/config-card-view-mode.test.ts"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.16",
+    "echarts": "^6.1.0",
+    "echarts-for-react": "^3.0.6",
+    "next": "16.2.10",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-icons": "5.5.0",
+    "tailwindcss": "^4.1.16",
+    "undici": "^8.6.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}
